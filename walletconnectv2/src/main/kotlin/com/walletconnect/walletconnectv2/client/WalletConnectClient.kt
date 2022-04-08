@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.KoinApplication
+import android.util.Log
 
 object WalletConnectClient {
     private val wcKoinApp: KoinApplication = KoinApplication.init()
@@ -20,7 +21,9 @@ object WalletConnectClient {
     fun initialize(initial: WalletConnect.Params.Init, onError: (WalletConnectException) -> Unit = {}) = with(initial) {
         // TODO: add logic to check hostName for ws/wss scheme with and without ://
         wcKoinApp.run {
+            Log.d("WALLET_CONNECT", "wcKoinApp 1")
             androidContext(application)
+            Log.d("WALLET_CONNECT", "wcKoinApp 2")
             modules(
                 commonModule(),
                 cryptoManager(),
@@ -29,9 +32,11 @@ object WalletConnectClient {
                 storageModule(),
                 engineModule(metadata)
             )
+            Log.d("WALLET_CONNECT", "wcKoinApp 3")
         }
-
+        Log.d("WALLET_CONNECT", "wcKoinApp 4")
         engineInteractor = wcKoinApp.koin.get()
+        Log.d("WALLET_CONNECT", "wcKoinApp 5")
         engineInteractor.handleInitializationErrors { walletConnectException -> onError(walletConnectException) }
     }
 
