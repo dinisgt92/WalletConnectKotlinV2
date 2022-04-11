@@ -1,5 +1,6 @@
 package com.walletconnect.walletconnectv2.client
 
+import android.util.Log
 import com.walletconnect.walletconnectv2.client.mapper.*
 import com.walletconnect.walletconnectv2.core.exceptions.client.WalletConnectException
 import com.walletconnect.walletconnectv2.core.model.vo.TopicVO
@@ -19,8 +20,11 @@ object WalletConnectClient {
 
     fun initialize(initial: WalletConnect.Params.Init, onError: (WalletConnectException) -> Unit = {}) = with(initial) {
         // TODO: add logic to check hostName for ws/wss scheme with and without ://
+        Log.d("WALLET_CONNECT", "wcKoinApp 1")
         wcKoinApp.run {
+            Log.d("WALLET_CONNECT", "wcKoinApp 2")
             androidContext(application)
+            Log.d("WALLET_CONNECT", "wcKoinApp 3")
             modules(
                 commonModule(),
                 cryptoManager(),
@@ -29,10 +33,13 @@ object WalletConnectClient {
                 storageModule(),
                 engineModule(metadata, isController)
             )
+            Log.d("WALLET_CONNECT", "wcKoinApp 4")
         }
-
+        Log.d("WALLET_CONNECT", "wcKoinApp 5")
         engineInteractor = wcKoinApp.koin.get()
+        Log.d("WALLET_CONNECT", "wcKoinApp 6")
         engineInteractor.handleInitializationErrors { walletConnectException -> onError(walletConnectException) }
+        Log.d("WALLET_CONNECT", "wcKoinApp 7")
     }
 
     @Throws(IllegalStateException::class)
